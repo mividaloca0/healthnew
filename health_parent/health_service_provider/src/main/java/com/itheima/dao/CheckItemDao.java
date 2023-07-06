@@ -2,8 +2,7 @@ package com.itheima.dao;
 
 import com.github.pagehelper.Page;
 import com.itheima.pojo.CheckItem;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 持久层Dao接口
@@ -11,5 +10,5 @@ import java.util.List;
 public interface CheckItemDao {
     public void add(CheckItem checkItem);
     //分页查询
-    public Page<CheckItem> selectByCondition(String queryString);
+    public Page<CheckItem> selectByCondition(@Param("queryString") String queryString);
 }
