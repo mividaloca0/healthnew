@@ -11,4 +11,8 @@ public interface CheckItemDao {
     public void add(CheckItem checkItem);
     //分页查询
     public Page<CheckItem> selectByCondition(@Param("queryString") String queryString);
+
+    long findCountByCheckItemId(Integer id);
+
+    void deleteById(Integer id);
 }

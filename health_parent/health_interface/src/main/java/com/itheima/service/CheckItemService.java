@@ -9,4 +9,6 @@ public interface CheckItemService {
     //分页查询
     public PageResult pageQuery(QueryPageBean queryPageBean);
 
+    //删除
+    void deleteById(Integer id);
 }

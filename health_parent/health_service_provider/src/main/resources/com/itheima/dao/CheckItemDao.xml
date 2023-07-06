@@ -4,9 +4,8 @@
 <mapper namespace="com.itheima.dao.CheckItemDao">
     <!--新增-->
     <insert id="add" parameterType="com.itheima.pojo.CheckItem">
-        insert into t_checkitem(code,name,sex,age,price,type,remark,attention)
-        values
-            (#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
+        insert into t_checkitem(code, name, sex, age, price, type, remark, attention)
+        values (#{code}, #{name}, #{sex}, #{age}, #{price}, #{type}, #{remark}, #{attention})
     </insert>
     <!--分页查询-->
     <select id="selectByCondition" parameterType="String" resultType="com.itheima.pojo.CheckItem">
@@ -15,4 +14,14 @@
             where code = #{queryString} or name = #{queryString}
         </if>
     </select>
+    <!--查询检查项是否在检查组中    -->
+    <select id="findCountByCheckItemId" resultType="java.lang.Long" parameterType="int">
+        select count(*)
+        from t_checkgroup_checkitem
+        where checkitem_id = #{id}
+    </select>
+    <!--    根据id删除-->
+    <delete id="deleteById" parameterType="int">
+        delete from t_checkitem where id = #{id}
+    </delete>
 </mapper>
