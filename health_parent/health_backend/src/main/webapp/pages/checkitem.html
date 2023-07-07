@@ -50,7 +50,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination-container">
-                <el-pagination
+                <el-pagination   
                         class="pagiantion"
                         @current-change="handleCurrentChange"
                         :current-page="pagination.currentPage"
@@ -296,9 +296,12 @@
             },
             // 弹出编辑窗口
             handleUpdate(row) {
+                //回显数据,将row中数据封装进表格中
+                this.formData=row
                 //弹出编辑窗口
                 this.dialogFormVisible4Edit = true;
-                //回显数据
+                //回显数据,将row中数据封装进表格中
+
 
             },
             //切换页码
