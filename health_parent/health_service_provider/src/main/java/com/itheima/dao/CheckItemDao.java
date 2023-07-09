@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.itheima.pojo.CheckItem;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 持久层Dao接口
  */
@@ -15,4 +17,8 @@ public interface CheckItemDao {
     long findCountByCheckItemId(Integer id);
 
     void deleteById(Integer id);
+    //编辑
+    void edit(CheckItem checkItem);
+
+    List<CheckItem> findAll();
 }

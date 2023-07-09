@@ -54,8 +54,18 @@ public class CheckItemServiceImpl implements CheckItemService {
             //被引用，不能删除
             throw new RuntimeException("当前检查项被引用，不能删除");
         }
-//没有被引用，可以删除
+        //没有被引用，可以删除
         checkItemDao.deleteById(id);
+    }
+    //编辑对象
+    @Override
+    public void edit(CheckItem checkItem) {
+        checkItemDao.edit(checkItem);
+    }
+    //查询所有
+    @Override
+    public List<CheckItem> findAll() {
+        return checkItemDao.findAll();
     }
 
 
