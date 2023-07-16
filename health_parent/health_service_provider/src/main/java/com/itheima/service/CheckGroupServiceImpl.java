@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 
 /*检查组服务
  * */
@@ -53,5 +54,34 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         PageHelper.startPage(currentPage, pageSize);
         Page<CheckGroup> page = checkGroupDao.findByCondition(queryString);
         return new PageResult(page.getTotal(),page.getResult());
+    }
+//根据id查询检查组
+    @Override
+    public CheckGroup findById(Integer id) {
+        return checkGroupDao.findById(id);
+    }
+//根据id查询关联的检查项
+    @Override
+    public List<Integer> findCheckItemsIdsByCheckGroupId(Integer id) {
+        return checkGroupDao.findCheckItemsIdsByCheckGroupId(id);
+    }
+//编辑检查组信息，同时需要关联检查组项
+    @Override
+    public void edit(CheckGroup checkGroup, Integer[] checkitemIds) {
+        //修改检查组基本信息，操作检查组t_checkgroup表
+        checkGroupDao.edit(checkGroup);
+        //清理当前检查组关联的检查项，操作中间关系表t_checkgroup_checkitem表
+        checkGroupDao.deleteAssoication(checkGroup.getId());
+        //重新建立当前检查组和检查项的关联关系
+        Integer checkGroupId = checkGroup.getId();
+        if (checkitemIds != null && checkitemIds.length > 0) {
+            for (Integer checkitemId : checkitemIds) {
+                //封装参数
+                HashMap<String, Integer> map = new HashMap<>();
+                map.put("checkgroupId", checkGroupId);
+                map.put("checkitemId", checkitemId);
+                checkGroupDao.setCheckGroupAndCheckItem(map);
+            }
+        }
     }
 }

@@ -282,6 +282,24 @@
             methods: {
                 //编辑
                 handleEdit() {
+                    //发送请求，将修改后的表单数据提交给后台
+                    axios.post("/checkGroup/edit.do?checkitemIds="+this.checkitemIds,this.formData).then((res)=>{
+
+                        if (res.data.flag){
+                            //操作成功
+                            this.$message({
+                                type:'success',
+                                message:res.data.message,
+                            })
+                        } else {
+                            //操作失败
+                            this.$message.error(res.data.message);
+                        }
+                    }).finally(()=>{
+                        this.dialogFormVisible4Edit = false;
+                        //重新进行分页查询
+                        this.findPage();
+                    });
                 },
                 //添加
                 handleAdd () {
@@ -334,6 +352,7 @@
                         if (res.data.flag){
                             //查询成功
                             this.tableData = res.data.data;
+
                     }else {
                             //查询失败
                             this.$message.error(res.data.message);}
@@ -341,6 +360,33 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    //弹出编辑窗口
+                    this.dialogFormVisible4Edit=true;
+                    this.activeName='first';
+                    //发送axios请求
+                    axios.get("/checkGroup/findById.do?id="+row.id).then((res)=>{
+                        if (res.data.flag) {
+                            //查询数据成功
+                            //数据回显
+                            this.formData=res.data.data;
+                        }else {
+                            //查询失败
+                            this.$message.error(res.data.message);
+                        }
+                    })
+                    //查询检查项信息，转为json，赋值给tableData
+                    axios.get("/checkitem/findAll.do").then((res)=>{
+                        if (res.data.flag){
+                            //查询成功
+                            this.tableData = res.data.data;
+                            //发送ajax请求，根据检查组id查询当前检查组包含的检查项id，用于数据回显
+                            axios.get("/checkGroup/findCheckItemsIdsByCheckGroupId.do?id="+row.id).then((res)=>{
+                                this.checkitemIds=res.data.data;
+                            })
+                        }else {
+                            //查询失败
+                            this.$message.error(res.data.message);}
+                    })
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {

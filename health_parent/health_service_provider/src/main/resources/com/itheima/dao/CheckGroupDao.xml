@@ -12,10 +12,47 @@
     <insert id="setCheckGroupAndCheckItem" parameterType="map">
         insert into t_checkgroup_checkitem(checkgroup_id, checkitem_id) values(#{checkgroupId},#{checkitemId})
     </insert>
-<!--    根据条件进行查询-->
+    <!--    根据条件进行查询-->
     <select id="findByCondition" resultType="com.itheima.pojo.CheckGroup" parameterType="string">
         select * from t_checkgroup
         <if test="value!= null and value !='' and value.lenth > 0">
             where code = #{value} or name = #{value} or helpCode = #{value}
+        </if>
     </select>
+<!--    根据id查询检查组-->
+    <select id="findById" resultType="com.itheima.pojo.CheckGroup" parameterType="int">
+        select * from t_checkgroup where id = #{id}
+    </select>
+<!--    根据检查组id查询关联的检查项id，查询中间关系表-->
+    <select id="findCheckItemsIdsByCheckGroupId" resultType="java.lang.Integer" parameterType="int">
+    select checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{id}
+    </select>
+<!--    根据id动态修改检查组相关字段-->
+    <update id="edit" parameterType="com.itheima.pojo.CheckGroup">
+        update t_checkgroup
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="helpCode != null">
+                age = #{helpCode},
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+        </set>
+    </update>
+<!--    根据id删除关联信息-->
+    <delete id="deleteAssoication" parameterType="int">
+        delete from t_checkgroup_checkitem where checkgroup_id = #{id}
+    </delete>
 </mapper>
